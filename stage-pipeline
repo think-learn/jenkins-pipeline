@@ -1,0 +1,61 @@
+pipeline {
+    agent any
+    environment {
+        name = 'shakti'
+    }
+    parameters {
+        string(name: 'person', defaultValue: 'Basanta', description: 'how are you' )
+    }
+
+    stages {
+        stage('run as a code') {
+            steps {
+                sh '''
+                cal 2025
+                ls 
+                pwd
+                ls
+                '''
+            }
+        }
+        stage('environment') {
+            environment {
+                name = 'bulu'
+            }
+            steps {
+                sh "echo ${name}"
+            }
+        }
+        stage('parameter') {
+            steps {
+                sh "echo ${person}"
+            }
+        }
+        stage('Continue ?') {
+            input {
+                message "Yes we should"
+                ok "Proceed"
+            }
+            steps {
+                echo 'deploy on prod'
+            }
+        }
+        
+         stage('prod') {
+            steps {
+                echo 'hello world'
+            }
+        }
+    }
+    post {
+        always {
+            echo 'i will always say hello again'
+        }
+        failure {
+            echo 'faild'
+        }
+        success {
+            echo 'success'
+        }
+    }
+}
